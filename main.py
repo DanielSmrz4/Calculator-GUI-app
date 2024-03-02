@@ -7,7 +7,7 @@ set_default_color_theme("blue")
 
 # Window
 window = CTk()
-window.geometry("250x390+800+400")
+window.geometry("240x380+800+400")
 window.resizable(False, False)
 window.title("Calculator")
 
@@ -107,11 +107,32 @@ def click_0():
         my_var.set(value + button_value)
 
 
-# Division
+# MATH OPERATIONS -----------------------------------/
 def division():
     value1 = my_var.get()
     num1.set(value1)
-    special_char.set(" / ")
+    special_char.set("/")
+    my_var.set("")
+
+
+def multiply():
+    value1 = my_var.get()
+    num1.set(value1)
+    special_char.set("*")
+    my_var.set("")
+
+
+def plus():
+    value1 = my_var.get()
+    num1.set(value1)
+    special_char.set("+")
+    my_var.set("")
+
+
+def minus():
+    value1 = my_var.get()
+    num1.set(value1)
+    special_char.set("-")
     my_var.set("")
 
 
@@ -120,8 +141,28 @@ def equals():
     num2.set(my_var.get())
     first = int(num1.get())
     second = int(num2.get())
-    result = first / second
-    my_var.set(str(round(result, 2)))
+    if special_char.get() == "/":
+        result = first / second
+        if first % second == 0:
+            my_var.set(str(int(result)))
+        else:
+            my_var.set(str(round(result, 3)))
+    elif special_char.get() == "*":
+        result = first * second
+        my_var.set(str(result))
+    elif special_char.get() == "+":
+        result = first + second
+        my_var.set(str(result))
+    elif special_char.get() == "-":
+        result = first - second
+        my_var.set(str(result))
+
+
+def reset():
+    my_var.set(value="0")
+    num1.set("")
+    special_char.set("")
+    num2.set("")
 
 
 # ----------------------------------------------------/
@@ -133,21 +174,21 @@ special_char = StringVar()
 num2 = StringVar()
 
 # SIDE COUNTING --------------------------------------/
-# FRAME for side counting
-frame_side_counting = CTkFrame(window, height=20, bg_color="transparent")
-frame_side_counting.pack(fill=BOTH, expand=True, padx=15, pady=10)
+# Frame for side counting
+frame_side_counting = CTkFrame(window, height=10, bg_color="transparent")
+frame_side_counting.pack(fill=BOTH, expand=False, padx=10, pady=10)
 
 # Label num1
 label_num1 = CTkLabel(frame_side_counting, textvariable=num1, font=("Helvetica", 13, "italic"))
 label_num1.grid(row=0, column=0, padx=5)
 
 # Label specials
-label_specials = CTkLabel(frame_side_counting, textvariable=special_char, font=("Helvetica", 13, "italic"))
-label_specials.grid(row=0, column=1)
+label_specials = CTkLabel(frame_side_counting, textvariable=special_char, font=("Helvetica", 14))
+label_specials.grid(row=0, column=1, padx=5)
 
 # Label num2
 label_num2 = CTkLabel(frame_side_counting, textvariable=num2, font=("Helvetica", 13, "italic"))
-label_num2.grid(row=0, column=2)
+label_num2.grid(row=0, column=2, padx=5)
 
 # WIDGETS --------------------------------------------/
 # Label main
@@ -156,7 +197,7 @@ label_main.pack(fill="x")
 
 # Frame for buttons
 frame_text = CTkFrame(window, height=40)
-frame_text.pack(fill=BOTH, expand=True, padx=15, pady=15, ipady=10)
+frame_text.pack(fill=BOTH, expand=True, padx=10, pady=10)
 
 # Buttons 1, 2, 3, /
 button_1 = CTkButton(frame_text, text="1", width=40, height=40, font=("Helvetica", 20, "bold"), command=click_1)
@@ -177,7 +218,7 @@ button_5.grid(row=1, column=1, pady=5, padx=7, sticky="we")
 button_6 = CTkButton(frame_text, text="6", width=40, height=40, font=("Helvetica", 20, "bold"), command=click_6)
 button_6.grid(row=1, column=2, pady=5, padx=7, sticky="we")
 button_multiply = CTkButton(frame_text, text="*", width=40, height=40, font=("Helvetica", 20, "bold"),
-                            fg_color="#ff9100", hover_color="#884d00")
+                            fg_color="#ff9100", hover_color="#884d00", command=multiply)
 button_multiply.grid(row=1, column=3, pady=5, padx=7, sticky="we")
 
 # Buttons 7, 8, 9, +
@@ -188,18 +229,18 @@ button_8.grid(row=2, column=1, pady=5, padx=7, sticky="we")
 button_9 = CTkButton(frame_text, text="9", width=40, height=40, font=("Helvetica", 20, "bold"), command=click_9)
 button_9.grid(row=2, column=2, pady=5, padx=7, sticky="we")
 button_plus = CTkButton(frame_text, text="+", width=40, height=40, font=("Helvetica", 20, "bold"), fg_color="#ff9100",
-                        hover_color="#884d00")
+                        hover_color="#884d00", command=plus)
 button_plus.grid(row=2, column=3, pady=5, padx=7, sticky="we")
 
 # Buttons CE, 0, . , -
-button_reset = CTkButton(frame_text, text="CE", width=40, height=40, font=("Helvetica", 20,))
+button_reset = CTkButton(frame_text, text="CE", width=40, height=40, font=("Helvetica", 20,), command=reset)
 button_reset.grid(row=3, column=0, pady=5, padx=7, sticky="we")
 button_0 = CTkButton(frame_text, text="0", width=40, height=40, font=("Helvetica", 20, "bold"), command=click_0)
 button_0.grid(row=3, column=1, pady=5, padx=7, sticky="we")
 button_dot = CTkButton(frame_text, text=".", width=40, height=40, font=("Helvetica", 20, "bold"))
 button_dot.grid(row=3, column=2, pady=5, padx=7, sticky="we")
 button_minus = CTkButton(frame_text, text="-", width=40, height=40, font=("Helvetica", 20, "bold"), fg_color="#ff9100",
-                         hover_color="#884d00")
+                         hover_color="#884d00", command=minus)
 button_minus.grid(row=3, column=3, pady=5, padx=7, sticky="we")
 
 # Button =
