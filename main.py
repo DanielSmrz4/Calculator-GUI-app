@@ -9,7 +9,8 @@ set_default_color_theme("blue")
 window = CTk()
 window.geometry("240x380+800+400")
 window.resizable(False, False)
-window.title("Calculator")
+window.title("Quick Math")
+window.iconbitmap("calculator3.ico")
 
 window.rowconfigure(0, weight=1)
 window.columnconfigure(0, weight=1)
@@ -111,6 +112,7 @@ def click_0():
 def division():
     value1 = my_var.get()
     num1.set(value1)
+    num2.set("")
     special_char.set("/")
     my_var.set("")
 
@@ -118,6 +120,7 @@ def division():
 def multiply():
     value1 = my_var.get()
     num1.set(value1)
+    num2.set("")
     special_char.set("*")
     my_var.set("")
 
@@ -125,6 +128,7 @@ def multiply():
 def plus():
     value1 = my_var.get()
     num1.set(value1)
+    num2.set("")
     special_char.set("+")
     my_var.set("")
 
@@ -132,6 +136,7 @@ def plus():
 def minus():
     value1 = my_var.get()
     num1.set(value1)
+    num2.set("")
     special_char.set("-")
     my_var.set("")
 
@@ -139,23 +144,29 @@ def minus():
 # Equals
 def equals():
     num2.set(my_var.get())
-    first = int(num1.get())
-    second = int(num2.get())
-    if special_char.get() == "/":
-        result = first / second
-        if first % second == 0:
-            my_var.set(str(int(result)))
-        else:
-            my_var.set(str(round(result, 3)))
-    elif special_char.get() == "*":
-        result = first * second
-        my_var.set(str(result))
-    elif special_char.get() == "+":
-        result = first + second
-        my_var.set(str(result))
-    elif special_char.get() == "-":
-        result = first - second
-        my_var.set(str(result))
+    try:
+        first = int(num1.get())
+        second = int(num2.get())
+        if special_char.get() == "/":
+            try:
+                result = first / second
+                if first % second == 0:
+                    my_var.set(str(int(result)))
+                else:
+                    my_var.set(str(round(result, 3)))
+            except ZeroDivisionError:
+                my_var.set("0")
+        elif special_char.get() == "*":
+            result = first * second
+            my_var.set(str(result))
+        elif special_char.get() == "+":
+            result = first + second
+            my_var.set(str(result))
+        elif special_char.get() == "-":
+            result = first - second
+            my_var.set(str(result))
+    except ValueError:
+        pass
 
 
 def reset():
