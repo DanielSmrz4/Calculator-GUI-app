@@ -1,4 +1,5 @@
 from customtkinter import *
+import re
 import math
 
 # Appereance
@@ -108,6 +109,13 @@ def click_0():
         my_var.set(value + button_value)
 
 
+def click_point_number():
+    value = my_var.get()
+    button_value = "."
+    if "." not in value:
+        my_var.set(value + button_value)
+
+
 # MATH OPERATIONS -----------------------------------/
 def division():
     value1 = my_var.get()
@@ -145,26 +153,38 @@ def minus():
 def equals():
     num2.set(my_var.get())
     try:
-        first = int(num1.get())
-        second = int(num2.get())
+        first = float(num1.get())
+        second = float(num2.get())
         if special_char.get() == "/":
             try:
                 result = first / second
                 if first % second == 0:
                     my_var.set(str(int(result)))
                 else:
-                    my_var.set(str(round(result, 3)))
+                    my_var.set(str(round(result, 4)))
             except ZeroDivisionError:
                 my_var.set("0")
         elif special_char.get() == "*":
             result = first * second
-            my_var.set(str(result))
+            if int(result) / second == first:
+                result = int(result)
+                my_var.set(str(result))
+            else:
+                my_var.set(str(round(result, 4)))
         elif special_char.get() == "+":
             result = first + second
-            my_var.set(str(result))
+            if int(result) - second == first:
+                result = int(result)
+                my_var.set(str(result))
+            else:
+                my_var.set(str(round(result, 4)))
         elif special_char.get() == "-":
             result = first - second
-            my_var.set(str(result))
+            if int(result) + second == first:
+                result = int(result)
+                my_var.set(str(result))
+            else:
+                my_var.set(str(round(result, 4)))
     except ValueError:
         pass
 
@@ -248,14 +268,16 @@ button_reset = CTkButton(frame_text, text="CE", width=40, height=40, font=("Helv
 button_reset.grid(row=3, column=0, pady=5, padx=7, sticky="we")
 button_0 = CTkButton(frame_text, text="0", width=40, height=40, font=("Helvetica", 20, "bold"), command=click_0)
 button_0.grid(row=3, column=1, pady=5, padx=7, sticky="we")
-button_dot = CTkButton(frame_text, text=".", width=40, height=40, font=("Helvetica", 20, "bold"))
+button_dot = CTkButton(frame_text, text=".", width=40, height=40, font=("Helvetica", 20, "bold"),
+                       command=click_point_number)
 button_dot.grid(row=3, column=2, pady=5, padx=7, sticky="we")
 button_minus = CTkButton(frame_text, text="-", width=40, height=40, font=("Helvetica", 20, "bold"), fg_color="#ff9100",
                          hover_color="#884d00", command=minus)
 button_minus.grid(row=3, column=3, pady=5, padx=7, sticky="we")
 
 # Button =
-button_equals = CTkButton(frame_text, text="=", width=40, height=40, font=("Helvetica", 20, "bold"), fg_color="#726777", hover_color="#584f5c", command=equals)
+button_equals = CTkButton(frame_text, text="=", width=40, height=40, font=("Helvetica", 20, "bold"), fg_color="#726777",
+                          hover_color="#584f5c", command=equals)
 button_equals.grid(row=4, column=0, columnspan=4, pady=(10, 0), padx=7, sticky="wes")
 
 window.mainloop()
